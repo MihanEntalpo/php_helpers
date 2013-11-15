@@ -50,6 +50,8 @@ Also:
 
 Where are some useful functions:
 
+```php
 Profiler::formatMem($bytes) // outbut memory in human readable format.
 Profiler::getCounters() // return all measured data in a array
 Profiler::printMeasures(true) // output to console, not for web (replaces <br> to \n, doesn't use <table> and colors)
+```
