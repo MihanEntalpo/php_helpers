@@ -46,10 +46,10 @@ Analyzing data |    1   |2872 sec|    30 MB|
 
 
 Also:
-=====
+-----
 
 Where are some useful functions:
 
-::formatMem($bytes) - outbut memory in human readable format.
-::getCounters() - return all measured data in a array
-::printMeasures(true) - output to console, not for web (replaces <br> to \n, doesn't use <table> and colors)
+Profiler::formatMem($bytes) // outbut memory in human readable format.
+Profiler::getCounters() // return all measured data in a array
+Profiler::printMeasures(true) // output to console, not for web (replaces <br> to \n, doesn't use <table> and colors)
