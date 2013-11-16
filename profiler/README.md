@@ -40,7 +40,8 @@ Profiler::printMeasures();
 
 Will outbut beautiful table of data, like this:
 
-|                | Runned | Time   |  Memory |
+| Task name      | Runned | Time   |  Memory |
+|----------------|--------|--------|---------|
 | Loading data   |    1   |  51 sec|  8000 MB|
 |Analyzing data  |    1   |2872 sec|    30 MB|
 
