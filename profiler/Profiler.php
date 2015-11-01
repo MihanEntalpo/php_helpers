@@ -19,6 +19,7 @@ class Profiler
 	private static $prevTime = 0;
 	private static $prevName = "";
 	private static $prevMem = 0;
+	private static $enabled=true;
 
 	/**
 	 * Сбрасывает все счётчики
@@ -30,6 +31,12 @@ class Profiler
 		$prevTime=0;
 		$prevMem=0;
 		$measuring=false;
+		$enabled = true;
+	}
+
+	public static function switchOff()
+	{
+		self::$enabled=false;
 	}
 
 	private static function delta()
@@ -59,6 +66,7 @@ class Profiler
 	 */
 	public static function measure($name = null,$echoIt=false)
 	{
+		if (!self::$enabled) return;
 		//Если имя задано
 		if ($name)
 		{
@@ -108,6 +116,7 @@ class Profiler
 
 	public static function getMeasures()
 	{
+		if (!self::$enabled) return;
 		return self::$counters;
 	}
 
@@ -157,6 +166,10 @@ class Profiler
 				{
 					border-bottom:1px solid grey;
 				}
+				.bottom-row td
+				{
+					border-top:1px solid grey;
+				}
 
 			</style>
 			<?php
@@ -180,20 +193,36 @@ class Profiler
 				if ($counter['mem']<0 && $minMem < abs($counter['mem'])) $minMem = abs($counter['mem']);
 				if ($counter['time']>$maxTime) $maxTime = $counter['time'];
 			}
+			$fulltime = 0;
+			$fullmem = 0;
 			foreach(self::$counters as $name=>$counter):
+				$fulltime += $counter['time'];
+				$fullmem += $counter['mem'];
+
 				$mem = abs($counter['mem']);
-				if ($counter['mem']>0)
+				if ($maxMem == 0)
 				{
-					$h = H::dec2hex( 127-(int) (127 * $counter['mem'] / $maxMem) ,2);
+					$memcolor='#fff';
+				}
+				else	if ($counter['mem']>0)
+				{
+					$h = H::dec2hex( 127-(int) (127 * $counter['mem'] / ($maxMem)) ,2);
 					$memcolor = "#AF{$h}00";
 				}
 				else
 				{
-					$h = H::dec2hex( 127-(int) (127 * abs($counter['mem']) / $maxMem) ,2);
+					$h = H::dec2hex( 127-(int) (127 * abs($counter['mem']) / ($maxMem)) ,2);
 					$memcolor = "#{$h}AF00";
 				}
 				$do = $counter['mem']>0 ? " used" : "freed";
-				$timecolor = "#" . H::dec2hex( (int)(200 * $counter['time']/$maxTime)) . "0000";
+				if ($maxTime==0)
+				{
+					$timecolor = "#fff";
+				}
+				else
+				{
+					$timecolor = "#" . H::dec2hex( (int)(200 * $counter['time']/$maxTime)) . "0000";
+				}
 				?>
 				<tr>
 					<td><?=$name?></td>
@@ -205,6 +234,11 @@ class Profiler
 
 			endforeach;
 			?>
+			<tr class="bottom-row">
+				<td colspan="2">Итого</td>
+				<td style='color:black;'><?=self::formatSeconds($fulltime)?></td>
+				<td style='color:black;'><?=self::formatMem($fullmem)?></td>
+			</tr>
 			</table>
 				<?php
 			echo "</div><br>";
