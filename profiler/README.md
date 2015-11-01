@@ -38,7 +38,7 @@ Profiler::measure();
 Profiler::printMeasures();
 ```
 
-Will outbut beautiful table of data, like this:
+Will output beautiful table of data, like this:
 
 | Task name      | Runned | Time   |  Memory |
 |----------------|--------|--------|---------|
