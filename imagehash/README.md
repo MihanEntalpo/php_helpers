@@ -1,6 +1,6 @@
 # ImageHash is a class, that creates and compares short image hashes
 
-It could be used to find almost duplicate images (with changed size, of file format)
+It could be used to *fastly* find almost duplicate images (with changed size, or file format)
 
 *Requirements:*
 
