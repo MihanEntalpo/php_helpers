@@ -28,9 +28,6 @@ $words = array(
     'Conway', 'Corwin', 'Courtney', 'Craig', 'Crispin', 'Crosby', 'Curtis', 'Cuthbert', 'Cyril'
 );
 
-//Create FastFuzzySearch object:
-
-$ffs = new FastFuzzySearch($words);
 
 //Create FastFuzzySearch object:
 $ffs = new FastFuzzySearch($words);
