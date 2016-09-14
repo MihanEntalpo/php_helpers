@@ -12,10 +12,6 @@ class FastFuzzySearch
      */  
 	protected $words = array();
     /**
-     * @var array кэш-массив
-     */  
-	protected $cache = array();
-    /**
      * @var array массив элементов слов
      */ 
 	protected $wordParts = array();
@@ -36,6 +32,8 @@ class FastFuzzySearch
      */ 
 	protected $isInitialized=false;
 	
+    protected static $indexFields = array("words", "wordParts", "minPart", "maxPart", "isInitialized");
+    
     /**
      * Конструктор
      * @param array $words массив слов, по которым нужно будет искать (можно пустой)
@@ -57,6 +55,43 @@ class FastFuzzySearch
 			$this->init();
 		}
 	}	
+    
+    /**
+     * Сериализовать индекс для сохранения во вне,
+     * и последующей быстрой загрузки
+     * @return string строка 
+     */ 
+    public function serializeIndex()
+    {
+        foreach(self::$indexFields as $f)
+        {
+            $index[$f] = $this->{$f};
+        }
+        
+        $res = json_encode($index, JSON_UNESCAPED_UNICODE);
+        
+        return $res;
+    }
+    
+    /**
+     * Рассериализовать индекс полученный из вне
+     * (сохранённый ранее с помощью serializeIndex)
+     * @param string $serializedIndex сериализованный индекс
+     */ 
+    public function unserializeIndex($serializedIndex)
+    {
+        $fields = array(
+            "words", "wordParts", "minPart", "maxPart", "isInitialized"
+        );
+        
+        $index = json_decode($serializedIndex, true);
+        
+        foreach(self::$indexFields as $f)
+        {
+            $this->{$f} = $index[$f];             
+        }
+    }
+
 	
     /**
      * Инициализировать
